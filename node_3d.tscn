@@ -1,0 +1,110 @@
+[gd_scene load_steps=16 format=3 uid="uid://cu4vfqvdqv7k1"]
+
+[ext_resource type="Material" uid="uid://b515gvegv2onf" path="res://sky.tres" id="1_a202f"]
+[ext_resource type="PackedScene" uid="uid://cxojfofdbbb3d" path="res://nodes/player.tscn" id="2_a0tk4"]
+[ext_resource type="Texture2D" uid="uid://dwlw7aj10c6kw" path="res://textures/floor.png" id="4_jka67"]
+[ext_resource type="Material" uid="uid://b5bphyj4v4k2g" path="res://ps1postprocess.tres" id="4_r3fl7"]
+[ext_resource type="Material" uid="uid://ydr6o3arevie" path="res://wall.tres" id="5_wc5p8"]
+[ext_resource type="Texture2D" uid="uid://md6q4envxa0x" path="res://textures/tiles.png" id="6_jsk3o"]
+[ext_resource type="Texture2D" uid="uid://bjy4wace7ruw1" path="res://textures/the man.png" id="7_wc5p8"]
+
+[sub_resource type="Sky" id="Sky_a0tk4"]
+sky_material = ExtResource("1_a202f")
+
+[sub_resource type="Environment" id="Environment_r3fl7"]
+background_mode = 2
+sky = SubResource("Sky_a0tk4")
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
+reflected_light_source = 1
+fog_enabled = true
+fog_density = 0.102
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_jka67"]
+auto_exposure_enabled = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_a0tk4"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i5arm"]
+albedo_texture = ExtResource("4_jka67")
+uv1_scale = Vector3(30.05, 30.05, 30.05)
+texture_filter = 0
+
+[sub_resource type="BoxMesh" id="BoxMesh_r3fl7"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jsk3o"]
+albedo_texture = ExtResource("6_jsk3o")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jsk3o"]
+radius = 0.61816406
+height = 1.996582
+
+[node name="Node3D" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_r3fl7")
+camera_attributes = SubResource("CameraAttributesPractical_jka67")
+
+[node name="Player" parent="." instance=ExtResource("2_a0tk4")]
+transform = Transform3D(1, 0, 0, 0, 1, -1.7484555e-07, 0, 1.7484555e-07, 1, 0, 2.61394, 0)
+LOOK_SENSITIVITY = 10
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.06695968, 0.81555367, 3.0280316)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(21.18, 0, 0, 0, 21.18, 0, 0, 0, 21.18, 0, -10.933313, 0)
+shape = SubResource("BoxShape3D_a0tk4")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D/CollisionShape3D"]
+material_override = SubResource("StandardMaterial3D_i5arm")
+mesh = SubResource("BoxMesh_r3fl7")
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="."]
+transform = Transform3D(0.145, 0, 0, 0, 0.145, 0, 0, 0, 0.145, 4.5033193, 2.3489494, -4.4840555)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D2"]
+transform = Transform3D(21.18129, 0, 0, 0, 21.18129, 0, 0, 0, 21.18129, 0, -10.933317, 0)
+shape = SubResource("BoxShape3D_a0tk4")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D2/CollisionShape3D"]
+material_override = ExtResource("5_wc5p8")
+material_overlay = SubResource("StandardMaterial3D_jsk3o")
+mesh = SubResource("BoxMesh_r3fl7")
+
+[node name="StaticBody3D3" type="StaticBody3D" parent="."]
+transform = Transform3D(0.175, 0, 0, 0, 0.175, 0, 0, 0, 0.175, -8.277277, 3.4737797, -2.7553701)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D3"]
+transform = Transform3D(21.18, 0, 0, 0, 21.18, 0, 0, 0, 21.18, 0, -10.933313, 0)
+shape = SubResource("BoxShape3D_a0tk4")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D3/CollisionShape3D"]
+transform = Transform3D(0.9999998, 0, 0, 0, 0.9999998, 0, 0, 0, 0.9999998, 2.1489353, 0, -0.90897745)
+material_override = ExtResource("5_wc5p8")
+lod_bias = 0.001
+mesh = SubResource("BoxMesh_r3fl7")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+material = ExtResource("4_r3fl7")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+
+[node name="Sprite3D" type="Sprite3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.10206008, 1.9673247, -3.0476909)
+billboard = 2
+texture_filter = 0
+texture = ExtResource("7_wc5p8")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.10206008, 1.6305051, -3.0476909)
+shape = SubResource("CapsuleShape3D_jsk3o")
