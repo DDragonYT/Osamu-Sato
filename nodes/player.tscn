@@ -59,3 +59,5 @@ mesh = SubResource("CapsuleMesh_a0tk4")
 libraries = {
 &"": SubResource("AnimationLibrary_i3pqv")
 }
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
