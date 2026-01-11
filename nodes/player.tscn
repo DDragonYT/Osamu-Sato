@@ -1,10 +1,25 @@
-[gd_scene load_steps=7 format=3 uid="uid://cxojfofdbbb3d"]
+[gd_scene load_steps=9 format=3 uid="uid://cxojfofdbbb3d"]
 
-[ext_resource type="Script" uid="uid://bqns4lc5k80ry" path="res://nodes/player.gd" id="1_4flbx"]
+[ext_resource type="Script" uid="uid://bqns4lc5k80ry" path="res://scripts/player.gd" id="1_4flbx"]
+[ext_resource type="FontFile" uid="uid://c178q8rpf6bjf" path="res://fonts/8bitlim.ttf" id="2_bms3g"]
+[ext_resource type="Material" uid="uid://b5bphyj4v4k2g" path="res://shaders/ps1postprocess.tres" id="3_me0cc"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_a0tk4"]
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_a0tk4"]
+[sub_resource type="Animation" id="Animation_me0cc"]
+resource_name = "Jump"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera3D:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0.7, 0), Vector3(0, 1, 0), Vector3(0, 0.7, 0)]
+}
 
 [sub_resource type="Animation" id="Animation_onrkg"]
 length = 0.001
@@ -19,6 +34,18 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [0.7]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera3D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.7, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_4flbx"]
@@ -39,6 +66,7 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_i3pqv"]
 _data = {
+&"Jump": SubResource("Animation_me0cc"),
 &"RESET": SubResource("Animation_onrkg"),
 &"Step": SubResource("Animation_4flbx")
 }
@@ -52,12 +80,40 @@ shape = SubResource("CapsuleShape3D_a0tk4")
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.99902296, 0.04419484, 0, -0.04419484, 0.99902296, 0, 0.7, 0)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("CapsuleMesh_a0tk4")
+[node name="RayCast3D" type="RayCast3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, -0.044194885, -0.99902296, 0, 0.99902296, -0.044194885, 0, 0.0048717856, -0.3738284)
+target_position = Vector3(0, -2, 0)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 &"": SubResource("AnimationLibrary_i3pqv")
 }
 
-[node name="RayCast3D" type="RayCast3D" parent="."]
+[node name="InteractPrompt" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="Label" type="Label" parent="InteractPrompt"]
+texture_filter = 1
+offset_top = 171.0
+offset_right = 319.0
+offset_bottom = 212.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_constants/shadow_outline_size = 5
+theme_override_fonts/font = ExtResource("2_bms3g")
+text = "[E] Interact"
+horizontal_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="InteractPrompt"]
+
+[node name="Shaders" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="Shaders"]
+material = ExtResource("3_me0cc")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4

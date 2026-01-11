@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://snsk78kas8rd"]
+
+[ext_resource type="Script" uid="uid://8o1tktxwphnp" path="res://scripts/game_controller.gd" id="1_j5px3"]
+
+[node name="GameController" type="Node" node_paths=PackedStringArray("world_3d")]
+script = ExtResource("1_j5px3")
+world_3d = NodePath("World3D")
+default_scene = "res://scenes/1_room.tscn"
+
+[node name="World3D" type="Node3D" parent="."]
